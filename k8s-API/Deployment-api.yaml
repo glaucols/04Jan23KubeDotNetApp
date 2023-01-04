@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+spec:
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api
+        image: glaucols/pedelogo.catalogo:v1.0.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 443
+          name: https
+        imagePullPolicy: Always
+        env:
+          - name: Mongo__Host
+            value: "mongo-service"
+          - name: Mongo__User
+            value: "mongouser"
+          - name: Mongo_Password
+            value: "mongopwd"
+          - name: Mongo_Port
+            value: "27017"
+          - name: Mongo__Database
+            value: "admin"
+
+          
